@@ -76,51 +76,51 @@ class BuildExtension(build_ext):
 
         cmake_args += extra_cmake_args
 
-        if is_windows():
-            build_cmd = f"""
-                cmake {cmake_args} -B {self.build_temp} -S {kaldi_native_fbank_dir}
-                cmake --build {self.build_temp} --target _kaldi_native_fbank --config Release -- -m
-                cmake --build {self.build_temp} --target install --config Release -- -m
-            """
-            print(f"build command is:\n{build_cmd}")
-            ret = os.system(
-                f"cmake {cmake_args} -B {self.build_temp} -S {kaldi_native_fbank_dir}"
-            )
-            if ret != 0:
-                raise Exception("Failed to configure kaldi_native_fbank")
+        # if is_windows():
+        build_cmd = f"""
+            cmake {cmake_args} -B {self.build_temp} -S {kaldi_native_fbank_dir}
+            cmake --build {self.build_temp} --target _kaldi_native_fbank --config Release -- -m
+            cmake --build {self.build_temp} --target install --config Release -- -m
+        """
+        print(f"build command is:\n{build_cmd}")
+        ret = os.system(
+            f"cmake {cmake_args} -B {self.build_temp} -S {kaldi_native_fbank_dir}"
+        )
+        if ret != 0:
+            raise Exception("Failed to configure kaldi_native_fbank")
 
-            ret = os.system(
-                f"cmake --build {self.build_temp} --target _kaldi_native_fbank --config Release -- -m"
-            )
-            if ret != 0:
-                raise Exception("Failed to build kaldi_native_fbank")
+        ret = os.system(
+            f"cmake --build {self.build_temp} --target _kaldi_native_fbank --config Release -- -m"
+        )
+        if ret != 0:
+            raise Exception("Failed to build kaldi_native_fbank")
 
-            ret = os.system(
-                f"cmake --build {self.build_temp} --target install --config Release -- -m"
-            )
-            if ret != 0:
-                raise Exception("Failed to install kaldi_native_fbank")
-        else:
-            if make_args == "" and system_make_args == "":
-                print("For fast compilation, run:")
-                print(
-                    'export KALDI_NATIVE_FBANK_MAKE_ARGS="-j"; python setup.py install'
-                )
+        ret = os.system(
+            f"cmake --build {self.build_temp} --target install --config Release -- -m"
+        )
+        if ret != 0:
+            raise Exception("Failed to install kaldi_native_fbank")
+        # else:
+        #     if make_args == "" and system_make_args == "":
+        #         print("For fast compilation, run:")
+        #         print(
+        #             'export KALDI_NATIVE_FBANK_MAKE_ARGS="-j"; python setup.py install'
+        #         )
 
-            build_cmd = f"""
-                cd {self.build_temp}
+        #     build_cmd = f"""
+        #         cd {self.build_temp}
 
-                cmake {cmake_args} {kaldi_native_fbank_dir}
+        #         cmake {cmake_args} {kaldi_native_fbank_dir}
 
 
-                make {make_args} kaldi_native_fbank install
-            """
-            print(f"build command is:\n{build_cmd}")
+        #         # make {make_args} kaldi_native_fbank install
+        #     """
+        #     print(f"build command is:\n{build_cmd}")
 
-            ret = os.system(build_cmd)
-            if ret != 0:
-                raise Exception(
-                    "\nBuild kaldi-native-fbank failed. Please check the error message.\n"
-                    "You can ask for help by creating an issue on GitHub.\n"
-                    "\nClick:\n\thttps://github.com/csukuangfj/kaldi-native-fbank/issues/new\n"  # noqa
-                )
+        #     ret = os.system(build_cmd)
+        #     if ret != 0:
+        #         raise Exception(
+        #             "\nBuild kaldi-native-fbank failed. Please check the error message.\n"
+        #             "You can ask for help by creating an issue on GitHub.\n"
+        #             "\nClick:\n\thttps://github.com/csukuangfj/kaldi-native-fbank/issues/new\n"  # noqa
+        #         )
