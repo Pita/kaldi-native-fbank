@@ -113,7 +113,7 @@ class BuildExtension(build_ext):
                 cmake {cmake_args} {kaldi_native_fbank_dir}
 
 
-                make {make_args} _kaldi_native_fbank install
+                make {make_args} kaldi_native_fbank install
             """
             print(f"build command is:\n{build_cmd}")
 
