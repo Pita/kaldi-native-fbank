@@ -90,7 +90,7 @@ class BuildExtension(build_ext):
             raise Exception("Failed to configure kaldi_native_fbank")
 
         ret = os.system(
-            f"cmake --build {self.build_temp} --target _kaldi_native_fbank --config Release -- -m"
+            f"cmake --build {self.build_temp} --target kaldi_native_fbank --config Release -- -m"
         )
         if ret != 0:
             raise Exception("Failed to build kaldi_native_fbank")
